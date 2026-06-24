@@ -358,6 +358,8 @@ faq_items = [
 st.markdown(
     """
     <style>
+    @import url('https://fonts.googleapis.com/css2?family=Jua&family=Gaegu:wght@400;700&display=swap');
+
     :root {
         --bg: #041b20;
         --card: rgba(7, 38, 45, 0.78);
@@ -387,8 +389,9 @@ st.markdown(
         max-width: 1200px;
     }
 
-    h1, h2, h3, p, div, span {
+    h1, h2, h3, p, div, span, button, summary, label, a {
         word-break: keep-all;
+        font-family: 'Jua', 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
     }
 
     .hero {
@@ -408,7 +411,7 @@ st.markdown(
         font-size: clamp(2.4rem, 6vw, 5.2rem);
         line-height: 1.02;
         font-weight: 900;
-        letter-spacing: -0.06em;
+        letter-spacing: -0.04em;
         color: #dfffff;
         text-shadow:
             0 0 8px rgba(101,255,242,0.95),
@@ -759,28 +762,22 @@ st.markdown(
     }
 
     .faq-core {
-        margin-top: 12px;
-        margin-bottom: 22px;
-        padding: 30px;
-        border-radius: 28px;
+        margin-top: 34px;
+        margin-bottom: 18px;
+        padding: 22px 26px;
+        border-radius: 22px;
         text-align: center;
-        background:
-            linear-gradient(135deg, rgba(255,242,122,0.16), rgba(101,255,242,0.12), rgba(255,43,214,0.12)),
-            rgba(4, 20, 25, 0.82);
-        border: 1px solid rgba(255,242,122,0.45);
-        box-shadow:
-            0 0 30px rgba(255,242,122,0.14),
-            0 0 20px rgba(101,255,242,0.12);
+        background: rgba(6, 34, 40, 0.68);
+        border: 1px solid rgba(101,255,242,0.28);
+        box-shadow: 0 0 16px rgba(101,255,242,0.08);
     }
 
     .faq-core-title {
-        color: #ffffff;
-        font-size: clamp(1.45rem, 3.8vw, 2.35rem);
-        line-height: 1.45;
-        font-weight: 900;
-        text-shadow:
-            0 0 14px rgba(255,242,122,0.5),
-            0 0 20px rgba(101,255,242,0.28);
+        color: #f4ffff;
+        font-size: clamp(1.15rem, 2.8vw, 1.65rem);
+        line-height: 1.55;
+        font-weight: 700;
+        text-shadow: 0 0 8px rgba(101,255,242,0.25);
     }
 
     .faq-guide {
@@ -1166,8 +1163,6 @@ with s2:
 # =========================
 # FAQ
 # =========================
-st.markdown('<div class="section-title">자주 묻는 질문</div>', unsafe_allow_html=True)
-
 st.markdown(
     """
     <div class="faq-core">
@@ -1179,6 +1174,8 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
+st.markdown('<div class="section-title">자주 묻는 질문</div>', unsafe_allow_html=True)
 
 st.markdown(
     '<div class="faq-guide">궁금한 질문을 클릭하면 답변을 확인할 수 있습니다.</div>',
