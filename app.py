@@ -2,6 +2,7 @@ import streamlit as st
 from pathlib import Path
 from datetime import date
 import html
+import base64
 
 # =========================
 # 기본 설정
@@ -18,6 +19,7 @@ st.set_page_config(
 # =========================
 EVENT_DATE = date(2026, 7, 10)
 DEADLINE_DATE = date(2026, 7, 7)
+RIRO_URL = "https://riro.kr/?347eaa"
 
 projects_2025 = [
     {
@@ -198,11 +200,71 @@ st.markdown(
         box-shadow: 0 0 14px rgba(255,242,122,0.14);
     }
 
-    .poster-box {
+    .poster-click-guide {
+        color: var(--yellow);
+        font-weight: 900;
+        text-align: center;
+        margin-bottom: 10px;
+        text-shadow: 0 0 10px rgba(255,242,122,0.5);
+    }
+
+    .poster-thumb {
+        width: 100%;
         border-radius: 24px;
-        overflow: hidden;
         border: 1px solid rgba(101,255,242,0.45);
         box-shadow: 0 0 26px rgba(101,255,242,0.24);
+        cursor: zoom-in;
+        transition: 0.2s ease;
+    }
+
+    .poster-thumb:hover {
+        transform: scale(1.015);
+        box-shadow:
+            0 0 34px rgba(101,255,242,0.32),
+            0 0 24px rgba(255,43,214,0.20);
+    }
+
+    .poster-modal-check {
+        display: none;
+    }
+
+    .poster-modal {
+        display: none;
+        position: fixed;
+        z-index: 999999;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.88);
+        backdrop-filter: blur(6px);
+        align-items: center;
+        justify-content: center;
+        padding: 28px;
+    }
+
+    .poster-modal-check:checked + .poster-modal {
+        display: flex;
+    }
+
+    .poster-modal img {
+        max-width: min(92vw, 760px);
+        max-height: 92vh;
+        border-radius: 20px;
+        box-shadow:
+            0 0 30px rgba(101,255,242,0.45),
+            0 0 45px rgba(255,43,214,0.25);
+    }
+
+    .poster-close {
+        position: fixed;
+        top: 24px;
+        right: 30px;
+        color: white;
+        font-size: 2.2rem;
+        font-weight: 900;
+        cursor: pointer;
+        text-shadow: 0 0 14px rgba(101,255,242,0.8);
     }
 
     .section-title {
@@ -248,6 +310,98 @@ st.markdown(
         font-size: 0.92rem;
         margin-top: 8px;
         line-height: 1.45;
+    }
+
+    .apply-box {
+        margin-top: 28px;
+        margin-bottom: 14px;
+        padding: 28px;
+        border-radius: 26px;
+        background:
+            linear-gradient(135deg, rgba(255,43,214,0.18), rgba(101,255,242,0.12)),
+            rgba(5, 29, 35, 0.86);
+        border: 1px solid rgba(255,43,214,0.45);
+        box-shadow:
+            0 0 28px rgba(255,43,214,0.16),
+            0 0 18px rgba(101,255,242,0.12);
+        text-align: center;
+    }
+
+    .apply-title {
+        color: #ffffff;
+        font-size: clamp(1.6rem, 4vw, 2.5rem);
+        font-weight: 900;
+        margin-bottom: 10px;
+        text-shadow:
+            0 0 14px rgba(255,43,214,0.7),
+            0 0 20px rgba(101,255,242,0.35);
+    }
+
+    .apply-text {
+        color: var(--muted);
+        font-size: 1.05rem;
+        margin-bottom: 20px;
+        line-height: 1.6;
+    }
+
+    .apply-button {
+        display: inline-block;
+        padding: 15px 28px;
+        border-radius: 999px;
+        background: linear-gradient(135deg, #ff2bd6, #65fff2);
+        color: #061014 !important;
+        font-size: 1.15rem;
+        font-weight: 900;
+        text-decoration: none !important;
+        box-shadow:
+            0 0 20px rgba(255,43,214,0.35),
+            0 0 22px rgba(101,255,242,0.25);
+        transition: 0.18s ease;
+    }
+
+    .apply-button:hover {
+        transform: translateY(-3px);
+        filter: brightness(1.12);
+    }
+
+    .contact-text {
+        margin-top: 18px;
+        color: #fffbd0;
+        font-size: 1.05rem;
+        font-weight: 900;
+        text-shadow: 0 0 10px rgba(255,242,122,0.35);
+    }
+
+    .result-highlight {
+        margin-top: 8px;
+        margin-bottom: 24px;
+        padding: 26px;
+        border-radius: 26px;
+        background:
+            linear-gradient(135deg, rgba(101,255,242,0.16), rgba(255,43,214,0.16)),
+            rgba(3, 18, 24, 0.82);
+        border: 1px solid rgba(101,255,242,0.50);
+        box-shadow:
+            0 0 30px rgba(101,255,242,0.18),
+            inset 0 0 26px rgba(255,43,214,0.06);
+    }
+
+    .result-highlight-title {
+        color: #ffffff;
+        font-size: clamp(1.45rem, 3.5vw, 2.15rem);
+        font-weight: 900;
+        margin-bottom: 10px;
+        text-shadow:
+            0 0 12px rgba(101,255,242,0.75),
+            0 0 22px rgba(255,43,214,0.32);
+    }
+
+    .result-highlight-text {
+        color: var(--yellow);
+        font-size: 1.12rem;
+        font-weight: 900;
+        line-height: 1.6;
+        text-shadow: 0 0 10px rgba(255,242,122,0.38);
     }
 
     a.project-card {
@@ -372,6 +526,11 @@ st.markdown(
         .info-card {
             min-height: auto;
         }
+
+        .poster-modal img {
+            max-width: 96vw;
+            max-height: 88vh;
+        }
     }
     </style>
     """,
@@ -392,7 +551,7 @@ def render_project_card(project, year):
             <span class="project-year">{year}</span>
             <span class="project-tag">{tag}</span>
             <div class="project-title">{title}</div>
-            <div class="project-more">결과물 보러가기 →</div>
+            <div class="project-more">클릭해서 결과물 확인하기 →</div>
         </a>
         """,
         unsafe_allow_html=True
@@ -419,6 +578,44 @@ def find_poster():
         if path.exists():
             return path
     return None
+
+
+def image_to_base64(path):
+    suffix = path.suffix.lower()
+
+    if suffix in [".jpg", ".jpeg"]:
+        mime = "image/jpeg"
+    else:
+        mime = "image/png"
+
+    with open(path, "rb") as f:
+        encoded = base64.b64encode(f.read()).decode()
+
+    return f"data:{mime};base64,{encoded}"
+
+
+def render_clickable_poster(path):
+    img_src = image_to_base64(path)
+
+    st.markdown(
+        f"""
+        <div class="poster-click-guide">포스터를 클릭하면 크게 볼 수 있어요 🔍</div>
+
+        <label for="poster-modal-toggle">
+            <img class="poster-thumb" src="{img_src}">
+        </label>
+
+        <input type="checkbox" id="poster-modal-toggle" class="poster-modal-check">
+
+        <div class="poster-modal">
+            <label for="poster-modal-toggle" class="poster-close">×</label>
+            <label for="poster-modal-toggle">
+                <img src="{img_src}">
+            </label>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
 
 # =========================
@@ -455,13 +652,12 @@ with right:
     poster_path = find_poster()
 
     if poster_path:
-        st.markdown('<div class="poster-box">', unsafe_allow_html=True)
-        st.image(str(poster_path), use_container_width=True)
-        st.markdown('</div>', unsafe_allow_html=True)
+        render_clickable_poster(poster_path)
     else:
         st.markdown(
             """
-            <div class="poster-box" style="padding:34px; min-height:420px; display:flex; align-items:center; justify-content:center;">
+            <div class="poster-click-guide">포스터 이미지 준비 중</div>
+            <div style="padding:34px; min-height:420px; display:flex; align-items:center; justify-content:center; border-radius:24px; border:1px solid rgba(101,255,242,0.45); box-shadow:0 0 26px rgba(101,255,242,0.24);">
                 <div style="text-align:center;">
                     <div style="font-size:4rem;">🐱‍💻</div>
                     <div style="font-size:1.4rem; font-weight:900; color:#65fff2; margin-top:10px;">
@@ -534,11 +730,41 @@ with c4:
     )
 
 # =========================
+# 신청하기 CTA
+# =========================
+st.markdown(
+    f"""
+    <div class="apply-box">
+        <div class="apply-title">지금 바로 신청하기!</div>
+        <div class="apply-text">
+            참가를 희망하는 학생은 리로스쿨에서 신청하고 참가 계획서를 제출해주세요.
+        </div>
+        <a class="apply-button" href="{RIRO_URL}" target="_blank" rel="noopener noreferrer">
+            리로스쿨 신청 페이지로 이동하기 →
+        </a>
+        <div class="contact-text">
+            문의: 3층 진로상담복지부 김지우T
+        </div>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+# =========================
 # 지난 결과물
 # =========================
-st.markdown('<div class="section-title">지난 학생 결과물 구경하기</div>', unsafe_allow_html=True)
+st.markdown('<div class="section-title">학생 결과물 확인하기</div>', unsafe_allow_html=True)
+
 st.markdown(
-    '<div class="section-caption">제목 카드를 클릭하면 학생들이 제작한 결과물 링크로 이동합니다.</div>',
+    """
+    <div class="result-highlight">
+        <div class="result-highlight-title">작년·재작년 선배들은 어떤 문제를 해결했을까요?</div>
+        <div class="result-highlight-text">
+            아래 결과물 제목 카드를 클릭하면 이전 학생들이 제작한 발표 자료와 결과물을 바로 확인할 수 있습니다.
+            아이디어를 정하기 전에 꼭 한 번 둘러보세요!
+        </div>
+    </div>
+    """,
     unsafe_allow_html=True
 )
 
@@ -617,7 +843,8 @@ with s2:
 st.markdown(
     """
     <div class="footer">
-        정보과학탐구한마당 · 다양한 문제를 발견하고, 소프트웨어로 해결해보세요.
+        정보과학탐구한마당 · 다양한 문제를 발견하고, 소프트웨어로 해결해보세요.<br>
+        문의: 3층 진로상담복지부 김지우T
     </div>
     """,
     unsafe_allow_html=True
