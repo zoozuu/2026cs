@@ -358,7 +358,7 @@ faq_items = [
 st.markdown(
     """
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Jua&family=Gaegu:wght@400;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Jua&family=Gaegu:wght@400;700&display=swap');
 
     :root {
         --bg: #041b20;
@@ -408,16 +408,17 @@ st.markdown(
     }
 
     .neon-title {
-        font-size: clamp(2.4rem, 6vw, 5.2rem);
-        line-height: 1.02;
-        font-weight: 900;
-        letter-spacing: -0.04em;
-        color: #dfffff;
-        text-shadow:
-            0 0 8px rgba(101,255,242,0.95),
-            0 0 24px rgba(101,255,242,0.65),
-            0 0 42px rgba(255,43,214,0.40);
-        margin-bottom: 18px;
+    font-family: 'Black Han Sans', 'Jua', 'Noto Sans KR', sans-serif;
+    font-size: clamp(2.7rem, 6.5vw, 5.6rem);
+    line-height: 1.05;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    color: #dfffff;
+    text-shadow:
+        0 0 8px rgba(101,255,242,0.95),
+        0 0 24px rgba(101,255,242,0.65),
+        0 0 42px rgba(255,43,214,0.40);
+    margin-bottom: 18px;
     }
 
     .sub-title {
