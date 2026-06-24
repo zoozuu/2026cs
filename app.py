@@ -369,7 +369,18 @@ st.markdown(
         --text: #eaffff;
         --muted: #b6d8dc;
     }
+    /* 제목을 제외한 모든 글자 네온 효과 제거 */
+[data-testid="stAppViewContainer"] *:not(.neon-title) {
+    text-shadow: none !important;
+}
 
+/* 맨 위 제목만 네온 효과 유지 */
+.neon-title {
+    text-shadow:
+        0 0 8px rgba(101,255,242,0.95),
+        0 0 24px rgba(101,255,242,0.65),
+        0 0 42px rgba(255,43,214,0.40) !important;
+}
     [data-testid="stAppViewContainer"] {
         background:
             radial-gradient(circle at 18% 12%, rgba(101, 255, 242, 0.16), transparent 30%),
