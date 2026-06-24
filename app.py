@@ -15,36 +15,45 @@ st.set_page_config(
 )
 
 # =========================
-# 데이터
+# 기본 데이터
 # =========================
 EVENT_DATE = date(2026, 7, 10)
 DEADLINE_DATE = date(2026, 7, 7)
 RIRO_URL = "https://riro.kr/?347eaa"
 
+
+def static_url(relative_path):
+    """
+    static 폴더 안 파일을 Streamlit 앱에서 연결하기 위한 경로
+    예: static/results/2025/a.pdf → app/static/results/2025/a.pdf
+    """
+    return f"app/static/{relative_path}"
+
+
 projects_2025 = [
     {
         "title": "도시소음 회피 가이드 시스템",
-        "url": "https://canva.link/9hrxwjm3wlbwaxr",
+        "file": "results/2025/noise-avoidance-guide.pdf",
         "tag": "생활 문제 해결"
     },
     {
         "title": "가짜뉴스 판별 프로그램",
-        "url": "https://canva.link/x1sdtfz6c1f2sb4",
+        "file": "results/2025/fake-news-detector.pdf",
         "tag": "인공지능 · 미디어"
     },
     {
         "title": "고등학교 내에서 발생하는 입시정보격차 해소; 스마트 입시정보 알림 키오스크 시스템",
-        "url": "https://canva.link/ca34a90d7xhiprb",
+        "file": "results/2025/smart-admission-info-kiosk.pdf",
         "tag": "교육 · 정보격차"
     },
     {
         "title": "고령화 사회에서 노인성 질환 조기 진단을 위한 활성 산소 바이오센서 모니터링 시스템 구현",
-        "url": "https://canva.link/cm17w6ie1zssx1c",
+        "file": "results/2025/reactive-oxygen-biosensor.pdf",
         "tag": "바이오센서 · 헬스케어"
     },
     {
         "title": "고령 환자를 위한 정보과학 기반 복약 알림 시스템",
-        "url": "https://canva.link/s2rbuerihe55j62",
+        "file": "results/2025/medicine-reminder-system.pdf",
         "tag": "헬스케어 · 알림 시스템"
     },
 ]
@@ -52,37 +61,37 @@ projects_2025 = [
 projects_2024 = [
     {
         "title": "필터 버블 현상 개선 프로그램",
-        "url": "https://drive.google.com/file/d/1PGg1fWUEKdU8kWDxyQDWq99vGPzirnXe/view?usp=drive_link",
+        "file": "results/2024/filter-bubble-html.pdf",
         "tag": "HTML"
     },
     {
         "title": "학교 엘레베이터 불필요한 탑승 제한하기",
-        "url": "https://drive.google.com/file/d/1HdaaN40tkxYg-U6KVlIYg5uC5T-K3Mbj/view?usp=drive_link",
+        "file": "results/2024/school-elevator-arduino.pdf",
         "tag": "아두이노"
     },
     {
         "title": "고령화시대에 올바른 약물 사용방안",
-        "url": "https://drive.google.com/file/d/1I5cIqVknfG-595Gvm9RCk5kl_9J1SrsK/view?usp=drive_link",
+        "file": "results/2024/proper-medication-orange-python.pdf",
         "tag": "오렌지3 · 파이썬"
     },
     {
         "title": "자율주행자동차의 딜레마 상황에서의 윤리적 판단 문제",
-        "url": "https://drive.google.com/file/d/1rsxNTXO6PRFIN1_5VEaqWuQotaL6Fp4j/view?usp=drive_link",
+        "file": "results/2024/autonomous-car-ethics-python.pdf",
         "tag": "파이썬"
     },
     {
         "title": "현대 사회의 노인 치매 발생 해결하기",
-        "url": "https://drive.google.com/file/d/1CAlR3bl4glJS8lhQESyK1hZUbOR_kEM5/view?usp=sharing",
+        "file": "results/2024/elderly-dementia-python.pdf",
         "tag": "파이썬"
     },
     {
         "title": "청년 실업 문제 해결",
-        "url": "https://drive.google.com/file/d/1XMCcLyd4ki9TPM4Mp6B2wdOsr9uYi8tt/view?usp=drive_link",
+        "file": "results/2024/youth-unemployment-website-plan.pdf",
         "tag": "웹사이트 기획"
     },
     {
         "title": "자율주행자동차 해킹 해결방안",
-        "url": "https://drive.google.com/file/d/1sBmhK2Vf2FX10zt4LmY_UmmOJ4XdyXxV/view?usp=drive_link",
+        "file": "results/2024/autonomous-car-hacking-plan.pdf",
         "tag": "프로그램 기획"
     },
 ]
@@ -543,7 +552,7 @@ st.markdown(
 def render_project_card(project, year):
     title = html.escape(project["title"])
     tag = html.escape(project["tag"])
-    url = project["url"]
+    url = static_url(project["file"])
 
     st.markdown(
         f"""
@@ -565,21 +574,6 @@ def render_project_grid(projects, year):
             render_project_card(project, year)
 
 
-def find_poster():
-    candidates = [
-        Path("poster.png"),
-        Path("Techno love Party의 사본.png"),
-        Path("Techno_love_Party.png"),
-        Path("poster.jpg"),
-        Path("poster.jpeg"),
-    ]
-
-    for path in candidates:
-        if path.exists():
-            return path
-    return None
-
-
 def image_to_base64(path):
     suffix = path.suffix.lower()
 
@@ -592,6 +586,22 @@ def image_to_base64(path):
         encoded = base64.b64encode(f.read()).decode()
 
     return f"data:{mime};base64,{encoded}"
+
+
+def find_poster():
+    candidates = [
+        Path("static/poster.png"),
+        Path("poster.png"),
+        Path("static/poster.jpg"),
+        Path("poster.jpg"),
+        Path("static/poster.jpeg"),
+        Path("poster.jpeg"),
+    ]
+
+    for path in candidates:
+        if path.exists():
+            return path
+    return None
 
 
 def render_clickable_poster(path):
@@ -661,10 +671,10 @@ with right:
                 <div style="text-align:center;">
                     <div style="font-size:4rem;">🐱‍💻</div>
                     <div style="font-size:1.4rem; font-weight:900; color:#65fff2; margin-top:10px;">
-                        poster.png
+                        static/poster.png
                     </div>
                     <div style="color:#b6d8dc; margin-top:8px;">
-                        포스터 이미지를 같은 폴더에 넣으면 여기에 표시됩니다.
+                        포스터 이미지를 static 폴더에 넣으면 여기에 표시됩니다.
                     </div>
                 </div>
             </div>
@@ -730,7 +740,7 @@ with c4:
     )
 
 # =========================
-# 신청하기 CTA
+# 신청하기
 # =========================
 st.markdown(
     f"""
@@ -751,7 +761,7 @@ st.markdown(
 )
 
 # =========================
-# 지난 결과물
+# 지난 학생 결과물
 # =========================
 st.markdown('<div class="section-title">학생 결과물 확인하기</div>', unsafe_allow_html=True)
 
