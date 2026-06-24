@@ -569,6 +569,7 @@ def render_project_card(project, year):
 
 def render_project_grid(projects, year):
     cols = st.columns(2)
+
     for i, project in enumerate(projects):
         with cols[i % 2]:
             render_project_card(project, year)
@@ -601,6 +602,7 @@ def find_poster():
     for path in candidates:
         if path.exists():
             return path
+
     return None
 
 
@@ -646,7 +648,7 @@ with left:
             <div class="desc">
                 앱, 프로그램, 알고리즘, 웹사이트, 데이터 분석 등 다양한 소프트웨어를 활용해
                 문제 해결 방법을 만들고 공유하는 행사입니다.
-                아래에서 작년과 재작년 학생들의 결과물을 먼저 살펴볼 수 있습니다.
+                아래에서 이전 참가 학생들의 결과물을 먼저 살펴볼 수 있습니다.
             </div>
             <div class="badge-row">
                 <span class="badge">💻 소프트웨어 활용</span>
@@ -715,6 +717,7 @@ with c2:
 
 with c3:
     deadline_text = "마감 전" if deadline_day >= 0 else "마감 완료"
+
     st.markdown(
         f"""
         <div class="info-card">
@@ -728,6 +731,7 @@ with c3:
 
 with c4:
     event_text = f"D-{d_day}" if d_day > 0 else ("오늘 진행" if d_day == 0 else "행사 종료")
+
     st.markdown(
         f"""
         <div class="info-card">
@@ -768,10 +772,10 @@ st.markdown('<div class="section-title">학생 결과물 확인하기</div>', un
 st.markdown(
     """
     <div class="result-highlight">
-        <div class="result-highlight-title">작년·재작년 선배들은 어떤 문제를 해결했을까요?</div>
+        <div class="result-highlight-title">선배들의 결과물을 보고 아이디어를 얻어보세요!</div>
         <div class="result-highlight-text">
             아래 결과물 제목 카드를 클릭하면 이전 학생들이 제작한 발표 자료와 결과물을 바로 확인할 수 있습니다.
-            아이디어를 정하기 전에 꼭 한 번 둘러보세요!
+            관심 있는 주제, 해결 방식, 발표 구성을 참고해 나만의 프로젝트를 구상해보세요!
         </div>
     </div>
     """,
